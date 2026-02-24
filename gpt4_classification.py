@@ -84,7 +84,7 @@ def classify_with_gpt4(text):
     start_time = time.time()
     
     messages = [
-        {"role": "system", "content": "You are a data classifier. Your task is to determine if the following data entry is 'High' or 'Low' sensitivity. Reply ONLY with 'High' or 'Low'."},
+        {"role": "system", "content": "You are a data sensitivity classifier for NFC Data Payloads. Your task is to determine if the following data entry is 'High' or 'Low' sensitivity. Reply ONLY with 'High' or 'Low'."},
         {"role": "user", "content": f"Data: {text}\n\nClassification:"}
     ]
 
