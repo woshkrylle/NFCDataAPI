@@ -76,42 +76,76 @@ def load_and_preprocess_data(filepath):
         print(f"Error: Neither '{test_csv_path}' nor '{original_csv_path}' found.")
         return None, None
 
-def classify_with_gpt4(text):
+def classify_batch_with_ai(texts, max_retries=5):
     """
-    Sends a prompt to GPT-4 to classify the text.
-    Returns the predicted label, the messages sent, and the time taken.
+    Sends a batch of texts to the AI model for classification.
+    Returns a list of predicted labels and the time taken.
+    Retries if the output length doesn't match the input or on API errors.
     """
     start_time = time.time()
     
+    # Construct the batch prompt
+    prompt_text = "Classify the following NFC Data Payloads as 'High' or 'Low' sensitivity.\n"
+    prompt_text += "Return the results as a list of strings separated by newlines, with no numbering or bullets. Example:\nHigh\nLow\nHigh\n\nData to classify:\n"
+    
+    for i, text in enumerate(texts):
+        prompt_text += f"Item {i+1}: {text}\n"
+
     messages = [
-        {"role": "system", "content": "You are a data sensitivity classifier for NFC Data Payloads. Your task is to determine if the following data entry is 'High' or 'Low' sensitivity. Reply ONLY with 'High' or 'Low'."},
-        {"role": "user", "content": f"Data: {text}\n\nClassification:"}
+        {"role": "system", "content": "You are a data sensitivity classifier. You must return exactly one label ('High' or 'Low') for each item provided in the list, in the same order. Do not provide explanations."},
+        {"role": "user", "content": prompt_text}
     ]
 
-    try:
-        response = client.chat.completions.create(
-            model="gpt-4",
-            messages=messages,
-            temperature=0  # Low temperature for consistent output
-        )
-        prediction = response.choices[0].message.content.strip()
-        
-        # Normalize prediction to match dataset labels ('High' or 'Low')
-        if "High" in prediction:
-            prediction = "High"
-        elif "Low" in prediction:
-            prediction = "Low"
-        else:
-            prediction = "Unknown" 
+    predictions = []
+    
+    for attempt in range(max_retries):
+        try:
+            if attempt > 0:
+                print(f"  Batch attempt {attempt+1}/{max_retries}...", end='\r')
+                time.sleep(1 * attempt) # Exponential backoff
+
+            response = client.chat.completions.create(
+                model="gpt-5-nano",
+                messages=messages,
+                temperature=0
+            )
+            content = response.choices[0].message.content.strip()
             
-    except Exception as e:
-        print(f"Error classifying text: {e}")
-        prediction = "Error"
+            # Parse the response (split by newline)
+            raw_predictions = [line.strip() for line in content.split('\n') if line.strip()]
+            
+            temp_predictions = []
+            # Fallback normalization and length check
+            for raw_pred in raw_predictions:
+                if "High" in raw_pred:
+                    temp_predictions.append("High")
+                elif "Low" in raw_pred:
+                    temp_predictions.append("Low")
+                else:
+                    temp_predictions.append("Unknown")
+            
+            # Validation: Check if the number of predictions matches input
+            if len(temp_predictions) == len(texts):
+                predictions = temp_predictions
+                break # Success!
+            else:
+                print(f"  Attempt {attempt+1} failed: Got {len(temp_predictions)} results for {len(texts)} inputs. Retrying...")
+        
+        except Exception as e:
+            print(f"  Attempt {attempt+1} error: {e}. Retrying...")
+            if attempt == max_retries - 1:
+                # On final failure, fill with Error to keep alignment
+                print("  Maximum retries reached. Marking batch as Error.")
+                predictions = ["Error"] * len(texts)
+
+    # Final safety check if loop finished without break and predictions not set
+    if not predictions:
+         predictions = ["Error"] * len(texts)
 
     end_time = time.time()
     duration = end_time - start_time
     
-    return prediction, messages, duration
+    return predictions, messages, duration
 
 def run_classification_evaluation(X_test, y_test, limit_samples=None):
     """
@@ -144,38 +178,41 @@ def run_classification_evaluation(X_test, y_test, limit_samples=None):
     predictions = []
     times = []
     
-    print("Starting classification with GPT-4...")
+    print("Starting classification with GPT-4 (Batch Mode)...")
     print(f"Total samples to process: {len(X_test)}")
-    print("This may take a while depending on the dataset size and API rate limits.")
-
-    # Iterate through the test set
-    # Handle both Series/DataFrame and raw lists
-    total = len(X_test)
     
-    # Convert to list if it's pandas series for zipping
+    # Batch processing configuration
+    BATCH_SIZE = 50  # Process 50 items per API call
+    
+    # Iterate through the test set in batches
     X_iter = X_test if isinstance(X_test, list) else X_test.tolist()
     y_iter = y_test if isinstance(y_test, list) else y_test.tolist()
 
     report_data = []
+    total = len(X_iter)
 
-    for i, (text, true_label) in enumerate(zip(X_iter, y_iter)):
-        print(f"Processing {i+1}/{total}...", end='\r')
+    for i in range(0, total, BATCH_SIZE):
+        batch_texts = X_iter[i:i + BATCH_SIZE]
+        batch_labels = y_iter[i:i + BATCH_SIZE]
         
-        pred, messages, duration = classify_with_gpt4(text)
-        predictions.append(pred)
-        times.append(duration)
+        print(f"Processing batch {i // BATCH_SIZE + 1} ({min(i + BATCH_SIZE, total)}/{total})...", end='\r')
+        
+        batch_preds, messages, duration = classify_batch_with_ai(batch_texts)
+        
+        # Distribute time across batch items for stats
+        avg_time_per_item = duration / len(batch_texts)
 
-        # Store details for report
-        # We capture the last message content which corresponds to the user prompt with the data
-        user_query = messages[-1]['content'] 
-        report_data.append({
-            'Index': i,
-            'Original Text': text,
-            'True Label': true_label,
-            'Query Sent': user_query,
-            'Predicted Label': pred,
-            'Duration (s)': duration
-        })
+        for j, (text, true_label, pred) in enumerate(zip(batch_texts, batch_labels, batch_preds)):
+            predictions.append(pred)
+            times.append(avg_time_per_item)
+            
+            report_data.append({
+                'Index': i + j,
+                'Original Text': text,
+                'True Label': true_label,
+                'Predicted Label': pred,
+                'Duration (s)': avg_time_per_item
+            })
 
     print("\nClassification complete.")
 
@@ -183,7 +220,9 @@ def run_classification_evaluation(X_test, y_test, limit_samples=None):
     report_df = pd.DataFrame(report_data)
     
     # Save to CSV
-    report_filename = "gpt4_classification_report.csv"
+    timestamp = time.strftime("%Y%m%d_%H%M%S")
+    report_filename = f"gpt4_classification_report_{timestamp}.csv"
+    
     report_df.to_csv(report_filename, index=False)
     print(f"\nFull report saved to '{report_filename}'")
     
