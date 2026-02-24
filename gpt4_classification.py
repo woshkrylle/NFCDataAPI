@@ -5,6 +5,10 @@ import time
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report
 from openai import OpenAI
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Initialize OpenAI client
 # Ensure your API key is set in the environment variables as OPENAI_API_KEY
@@ -75,17 +79,19 @@ def load_and_preprocess_data(filepath):
 def classify_with_gpt4(text):
     """
     Sends a prompt to GPT-4 to classify the text.
-    Returns the predicted label and the time taken.
+    Returns the predicted label, the messages sent, and the time taken.
     """
     start_time = time.time()
     
+    messages = [
+        {"role": "system", "content": "You are a data classifier. Your task is to determine if the following data entry is 'High' or 'Low' sensitivity. Reply ONLY with 'High' or 'Low'."},
+        {"role": "user", "content": f"Data: {text}\n\nClassification:"}
+    ]
+
     try:
         response = client.chat.completions.create(
             model="gpt-4",
-            messages=[
-                {"role": "system", "content": "You are a data classifier. Your task is to determine if the following data entry is 'High Sensitivity' or 'Low Sensitivity'. Reply ONLY with 'High Sensitivity' or 'Low Sensitivity'."},
-                {"role": "user", "content": f"Data: {text}\n\nClassification:"}
-            ],
+            messages=messages,
             temperature=0  # Low temperature for consistent output
         )
         prediction = response.choices[0].message.content.strip()
@@ -105,7 +111,7 @@ def classify_with_gpt4(text):
     end_time = time.time()
     duration = end_time - start_time
     
-    return prediction, duration
+    return prediction, messages, duration
 
 def run_classification_evaluation(X_test, y_test, limit_samples=None):
     """
@@ -150,14 +156,41 @@ def run_classification_evaluation(X_test, y_test, limit_samples=None):
     X_iter = X_test if isinstance(X_test, list) else X_test.tolist()
     y_iter = y_test if isinstance(y_test, list) else y_test.tolist()
 
+    report_data = []
+
     for i, (text, true_label) in enumerate(zip(X_iter, y_iter)):
         print(f"Processing {i+1}/{total}...", end='\r')
         
-        pred, duration = classify_with_gpt4(text)
+        pred, messages, duration = classify_with_gpt4(text)
         predictions.append(pred)
         times.append(duration)
 
+        # Store details for report
+        # We capture the last message content which corresponds to the user prompt with the data
+        user_query = messages[-1]['content'] 
+        report_data.append({
+            'Index': i,
+            'Original Text': text,
+            'True Label': true_label,
+            'Query Sent': user_query,
+            'Predicted Label': pred,
+            'Duration (s)': duration
+        })
+
     print("\nClassification complete.")
+
+    # Create DataFrame for reporting
+    report_df = pd.DataFrame(report_data)
+    
+    # Save to CSV
+    report_filename = "gpt4_classification_report.csv"
+    report_df.to_csv(report_filename, index=False)
+    print(f"\nFull report saved to '{report_filename}'")
+    
+    # Print tabulated report (first 10 rows)
+    print("\n--- Classification Report (First 10 Rows) ---")
+    print(report_df.head(10).to_string(index=False))
+    print("-" * 50)
 
     # Calculate Metrics
     y_pred = np.array(predictions)

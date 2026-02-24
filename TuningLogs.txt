@@ -1,4 +1,4 @@
-===== DT Grid Search Results =====
+can===== DT Grid Search Results =====
 Time: 2026-02-22 20:33:22.930618
 Grid: {'clf__criterion': ['gini', 'entropy', 'log_loss'], 'clf__max_depth': [5, 10, 15, 20], 'clf__min_samples_split': [3, 5, 7], 'clf__min_samples_leaf': [8, 10, 12], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4), (3, 5)]}
 Best Params: {'clf__criterion': 'entropy', 'clf__max_depth': 10, 'clf__min_samples_leaf': 8, 'clf__min_samples_split': 3, 'count_vectorizer__ngram_range': (1, 2)}

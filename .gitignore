@@ -1,0 +1,42 @@
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables (Critical security)
+.env
+.env.local
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Data files (Input and Output)
+*.csv
+*.xlsx
+*.xls
+ths-currdata-10k.csv
+gpt4_classification_report.csv
+test_split_dataset.csv
+
+# Model files (Large binaries)
+*.joblib
+*.pkl
+*.h5
+*.pth
+best_knn_model.joblib
+
+# Logs
+*.log
+TuningLogs.txt
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# VS Code settings (Optional, usually good to ignore local workspace settings)
+.vscode/
+
+# OS specific files
+.DS_Store
+Thumbs.db
