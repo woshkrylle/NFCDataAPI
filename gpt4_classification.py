@@ -82,17 +82,28 @@ def classify_batch_with_ai(texts, max_retries=5):
     Returns a list of predicted labels and the time taken.
     Retries if the output length doesn't match the input or on API errors.
     """
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        print("Error: OPENAI_API_KEY not found in environment.")
+        return ["Error"] * len(texts), [], 0
+
+    try:
+        local_client = OpenAI(api_key=api_key)
+    except Exception as e:
+        print(f"Error initializing OpenAI client: {e}")
+        return ["Error"] * len(texts), [], 0
+
     start_time = time.time()
     
     # Construct the batch prompt
     prompt_text = "Classify the following NFC Data Payloads as 'High' or 'Low' sensitivity.\n"
-    prompt_text += "Return the results as a list of strings separated by newlines, with no numbering or bullets. Example:\nHigh\nLow\nHigh\n\nData to classify:\n"
+    prompt_text += "Return ONLY a list of labels separated by newlines. No numbering, no bullets, no extra text. Example:\nHigh\nLow\nHigh\n\nData to classify:\n"
     
     for i, text in enumerate(texts):
-        prompt_text += f"Item {i+1}: {text}\n"
+        prompt_text += f"{text}\n"
 
     messages = [
-        {"role": "system", "content": "You are a data sensitivity classifier. You must return exactly one label ('High' or 'Low') for each item provided in the list, in the same order. Do not provide explanations."},
+        {"role": "system", "content": "You are a data sensitivity classifier. You must return exactly one label ('High' or 'Low') for each item provided in the list, in the same order. Do not provide explanations. Do not use numbering."},
         {"role": "user", "content": prompt_text}
     ]
 
@@ -104,25 +115,38 @@ def classify_batch_with_ai(texts, max_retries=5):
                 print(f"  Batch attempt {attempt+1}/{max_retries}...", end='\r')
                 time.sleep(1 * attempt) # Exponential backoff
 
-            response = client.chat.completions.create(
+            print(f" DEBUG: Sending request to OpenAI...", end='\r')
+            response = local_client.chat.completions.create(
                 model="gpt-5-nano",
                 messages=messages,
-                temperature=0
+                temperature=1
             )
-            content = response.choices[0].message.content.strip()
+
+            if not response or not response.choices:
+                raise ValueError(f"Empty or invalid response from API: {response}")
+
+            content = response.choices[0].message.content
+            if content is None:
+                 raise ValueError("API returned None for message content")
+            
+            content = content.strip()
+            # print(f" DEBUG: Raw content glimpse: {content[:50]}...") # Optional debug
             
             # Parse the response (split by newline)
-            raw_predictions = [line.strip() for line in content.split('\n') if line.strip()]
+            raw_lines = [line.strip() for line in content.split('\n') if line.strip()]
             
             temp_predictions = []
-            # Fallback normalization and length check
-            for raw_pred in raw_predictions:
-                if "High" in raw_pred:
+            # Robust Parsing
+            for line in raw_lines:
+                # Remove common numbering/bullets (e.g., "1. High", "- High")
+                clean_line = line.lstrip("0123456789.-_•* ").strip().lower()
+                
+                if "high" in clean_line:
                     temp_predictions.append("High")
-                elif "Low" in raw_pred:
+                elif "low" in clean_line:
                     temp_predictions.append("Low")
-                else:
-                    temp_predictions.append("Unknown")
+                # If neither found, ignore it if it looks like conversational filler, or append Unknown
+                # But here we ideally want 1:1 mapping
             
             # Validation: Check if the number of predictions matches input
             if len(temp_predictions) == len(texts):
@@ -130,6 +154,8 @@ def classify_batch_with_ai(texts, max_retries=5):
                 break # Success!
             else:
                 print(f"  Attempt {attempt+1} failed: Got {len(temp_predictions)} results for {len(texts)} inputs. Retrying...")
+                # Optional: Print glimpse of what went wrong for debugging
+                # print(f"DEBUG: Content peek: {content[:100]}...")
         
         except Exception as e:
             print(f"  Attempt {attempt+1} error: {e}. Retrying...")
