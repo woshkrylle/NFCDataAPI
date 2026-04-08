@@ -78,3 +78,23 @@ Grid: {'clf__alpha': [0.5, 0.3, 0.1], 'clf__fit_prior': [True, False], 'clf__for
 Best Params: {'clf__alpha': 0.3, 'clf__fit_prior': True, 'clf__force_alpha': True, 'count_vectorizer__max_features': 3500}
 Best Score: 0.985864591587789
 
+===== KNN Grid Search Results =====
+Grid: {'clf__n_neighbors': [4, 5, 6], 'clf__weights': ['uniform', 'distance'], 'clf__metric': ['euclidean', 'manhattan'], 'count_vectorizer__max_features': [3750, 4000, 4250]}
+Best Params: {'clf__metric': 'euclidean', 'clf__n_neighbors': 4, 'clf__weights': 'distance', 'count_vectorizer__max_features': 3750}
+Best Score: 0.9628796591668602
+
+===== KNN Grid Search Results =====
+Grid: {'clf__n_neighbors': [10, 15, 20], 'clf__weights': ['uniform', 'distance'], 'clf__metric': ['euclidean', 'manhattan'], 'count_vectorizer__max_features': [3750, 4000, 4250]}
+Best Params: {'clf__metric': 'manhattan', 'clf__n_neighbors': 10, 'clf__weights': 'distance', 'count_vectorizer__max_features': 3750}
+Best Score: 0.9393788402117885
+
+===== KNN Grid Search Results =====
+Grid: {'clf__n_neighbors': [5, 10, 15], 'clf__weights': ['uniform', 'distance'], 'clf__metric': ['euclidean', 'manhattan'], 'count_vectorizer__max_features': [2000, 3000, 3500]}
+Best Params: {'clf__metric': 'euclidean', 'clf__n_neighbors': 5, 'clf__weights': 'distance', 'count_vectorizer__max_features': 2000}
+Best Score: 0.97255267288224
+
+===== KNN Grid Search Results =====
+Grid: {'clf__n_neighbors': [2, 3, 4, 5], 'clf__weights': ['uniform', 'distance'], 'clf__metric': ['euclidean', 'manhattan'], 'count_vectorizer__max_features': [1500, 2000, 2500]}
+Best Params: {'clf__metric': 'euclidean', 'clf__n_neighbors': 2, 'clf__weights': 'distance', 'count_vectorizer__max_features': 1500}
+Best Score: 0.9878297112845646
+

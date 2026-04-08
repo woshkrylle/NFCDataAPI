@@ -116,6 +116,8 @@ Grid: {'clf__alpha': [0.05, 0.03, 0.01], 'clf__fit_prior': [True, False], 'clf__
 Best Params: {'clf__alpha': 0.05, 'clf__fit_prior': True, 'clf__force_alpha': True, 'count_vectorizer__ngram_range': (1, 2)}
 Best Score: 0.9888175565293922
 
+START
+
 ===== DT Grid Search Results =====
 Time: 2026-03-14 17:11:58.614540
 Grid: {'clf__criterion': ['gini', 'entropy', 'log_loss'], 'clf__max_depth': [10, 20, 30], 'clf__min_samples_split': [5, 10, 15], 'clf__min_samples_leaf': [10, 20, 30], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4), (4, 5)], 'count_vectorizer__max_features': [100, 500, 1000, 2000]}
@@ -324,6 +326,122 @@ Best Score: 0.992165707559714
 Grid: {'svd__n_components': [10, 13, 15], 'clf__n_neighbors': [7, 8, 9, 10], 'clf__weights': ['uniform', 'distance'], 'clf__metric': ['euclidean', 'manhattan'], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
 Best Params: {'clf__metric': 'euclidean', 'clf__n_neighbors': 7, 'clf__weights': 'distance', 'count_vectorizer__max_features': 1750, 'count_vectorizer__ngram_range': (1, 2), 'svd__n_components': 15}
 Best Score: 0.9890995901734794
+
+===== NB Grid Search Results =====
+Grid: {'clf__alpha': [0.2, 0.1, 0.09], 'clf__fit_prior': [True, False], 'clf__force_alpha': [True, False], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
+Best Params: {'clf__alpha': 0.1, 'clf__fit_prior': False, 'clf__force_alpha': True, 'count_vectorizer__max_features': 2250, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.989231471718445
+
+===== DT Grid Search Results =====
+Time: 2026-03-18 18:39:53.650060
+Grid: {'clf__criterion': ['gini', 'entropy', 'log_loss'], 'clf__max_depth': [17, 18, 19, 20], 'clf__min_samples_split': [2, 3, 4], 'clf__min_samples_leaf': [2, 3, 4], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4), (4, 5)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
+Best Params: {'clf__criterion': 'entropy', 'clf__max_depth': 18, 'clf__min_samples_leaf': 3, 'clf__min_samples_split': 2, 'count_vectorizer__max_features': 1750, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.992165707559714
+
+===== KNN Grid Search Results =====
+Grid: {'svd__n_components': [10, 13, 15], 'clf__n_neighbors': [7, 8, 9, 10], 'clf__weights': ['uniform', 'distance'], 'clf__metric': ['euclidean', 'manhattan'], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
+Best Params: {'clf__metric': 'euclidean', 'clf__n_neighbors': 7, 'clf__weights': 'distance', 'count_vectorizer__max_features': 1750, 'count_vectorizer__ngram_range': (1, 2), 'svd__n_components': 15}
+Best Score: 0.9890995901734794
+
+===== NB Grid Search Results =====
+Grid: {'clf__alpha': [0.2, 0.1, 0.09], 'clf__fit_prior': [True, False], 'clf__force_alpha': [True, False], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
+Best Params: {'clf__alpha': 0.1, 'clf__fit_prior': False, 'clf__force_alpha': True, 'count_vectorizer__max_features': 2250, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.989231471718445
+
+===== DT Grid Search Results =====
+Time: 2026-03-19 23:08:10.516338
+Grid: {'clf__criterion': ['gini', 'entropy', 'log_loss'], 'clf__max_depth': [17, 18, 19, 20], 'clf__min_samples_split': [2, 3, 4], 'clf__min_samples_leaf': [2, 3, 4], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4), (4, 5)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
+Best Params: {'clf__criterion': 'entropy', 'clf__max_depth': 18, 'clf__min_samples_leaf': 3, 'clf__min_samples_split': 2, 'count_vectorizer__max_features': 1750, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.992165707559714
+
+===== KNN Grid Search Results =====
+Grid: {'svd__n_components': [10, 13, 15], 'clf__n_neighbors': [7, 8, 9, 10], 'clf__weights': ['uniform', 'distance'], 'clf__metric': ['euclidean', 'manhattan'], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
+Best Params: {'clf__metric': 'euclidean', 'clf__n_neighbors': 7, 'clf__weights': 'distance', 'count_vectorizer__max_features': 1750, 'count_vectorizer__ngram_range': (1, 2), 'svd__n_components': 15}
+Best Score: 0.9890995901734794
+
+===== NB Grid Search Results =====
+Grid: {'clf__alpha': [0.2, 0.1, 0.09], 'clf__fit_prior': [True, False], 'clf__force_alpha': [True, False], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
+Best Params: {'clf__alpha': 0.1, 'clf__fit_prior': False, 'clf__force_alpha': True, 'count_vectorizer__max_features': 2250, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.989231471718445
+
+===== KNN Grid Search Results =====
+Grid: {'clf__n_neighbors': [10, 20, 30], 'clf__weights': ['uniform', 'distance'], 'clf__metric': ['euclidean', 'manhattan'], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
+Best Params: {'clf__metric': 'euclidean', 'clf__n_neighbors': 10, 'clf__weights': 'distance', 'count_vectorizer__max_features': 1750, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.977845744340075
+
+===== KNN Grid Search Results =====
+Grid: {'clf__n_neighbors': [5, 10, 15], 'clf__weights': ['uniform', 'distance'], 'clf__metric': ['euclidean', 'manhattan'], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1500, 1750, 2000]}
+Best Params: {'clf__metric': 'euclidean', 'clf__n_neighbors': 5, 'clf__weights': 'distance', 'count_vectorizer__max_features': 1500, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.9868503380711708
+
+===== KNN Grid Search Results =====
+Grid: {'clf__n_neighbors': [3, 5, 7], 'clf__weights': ['uniform', 'distance'], 'clf__metric': ['euclidean', 'manhattan'], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1000, 1500, 1750]}
+Best Params: {'clf__metric': 'euclidean', 'clf__n_neighbors': 3, 'clf__weights': 'uniform', 'count_vectorizer__max_features': 1500, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.988952580223017
+
+===== KNN Grid Search Results =====
+Grid: {'clf__n_neighbors': [2, 3, 4, 5], 'clf__weights': ['uniform', 'distance'], 'clf__metric': ['euclidean', 'manhattan'], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1250, 1500, 1750]}
+Best Params: {'clf__metric': 'euclidean', 'clf__n_neighbors': 4, 'clf__weights': 'distance', 'count_vectorizer__max_features': 1500, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.9896488875687519
+
+===== DT Grid Search Results =====
+Time: 2026-03-20 10:49:38.978856
+Grid: {'clf__criterion': ['gini', 'entropy', 'log_loss'], 'clf__max_depth': [17, 18, 19, 20], 'clf__min_samples_split': [2, 3, 4], 'clf__min_samples_leaf': [2, 3, 4], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4), (4, 5)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
+Best Params: {'clf__criterion': 'entropy', 'clf__max_depth': 18, 'clf__min_samples_leaf': 3, 'clf__min_samples_split': 2, 'count_vectorizer__max_features': 1750, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.992165707559714
+
+===== KNN Grid Search Results =====
+Grid: {'clf__n_neighbors': [2, 3, 4, 5], 'clf__weights': ['uniform', 'distance'], 'clf__metric': ['euclidean', 'manhattan'], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1250, 1500, 1750]}
+Best Params: {'clf__metric': 'euclidean', 'clf__n_neighbors': 4, 'clf__weights': 'distance', 'count_vectorizer__max_features': 1500, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.9896488875687519
+
+===== NB Grid Search Results =====
+Grid: {'clf__alpha': [0.2, 0.1, 0.09], 'clf__fit_prior': [True, False], 'clf__force_alpha': [True, False], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
+Best Params: {'clf__alpha': 0.1, 'clf__fit_prior': False, 'clf__force_alpha': True, 'count_vectorizer__max_features': 2250, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.989231471718445
+
+===== DT Grid Search Results =====
+Time: 2026-04-08 16:47:47.842927
+Grid: {'clf__criterion': ['gini', 'entropy', 'log_loss'], 'clf__max_depth': [17, 18, 19, 20], 'clf__min_samples_split': [2, 3, 4], 'clf__min_samples_leaf': [2, 3, 4], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4), (4, 5)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
+Best Params: {'clf__criterion': 'entropy', 'clf__max_depth': 18, 'clf__min_samples_leaf': 3, 'clf__min_samples_split': 2, 'count_vectorizer__max_features': 1750, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.992165707559714
+
+===== KNN Grid Search Results =====
+Grid: {'clf__n_neighbors': [2, 3, 4, 5], 'clf__weights': ['uniform', 'distance'], 'clf__metric': ['euclidean', 'manhattan'], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1250, 1500, 1750]}
+Best Params: {'clf__metric': 'euclidean', 'clf__n_neighbors': 4, 'clf__weights': 'distance', 'count_vectorizer__max_features': 1500, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.9896488875687519
+
+===== NB Grid Search Results =====
+Grid: {'clf__alpha': [0.2, 0.1, 0.09], 'clf__fit_prior': [True, False], 'clf__force_alpha': [True, False], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
+Best Params: {'clf__alpha': 0.1, 'clf__fit_prior': False, 'clf__force_alpha': True, 'count_vectorizer__max_features': 2250, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.989231471718445
+
+===== DT Grid Search Results =====
+Time: 2026-04-08 17:16:31.855747
+Grid: {'clf__criterion': ['gini', 'entropy', 'log_loss'], 'clf__max_depth': [17, 18, 19, 20], 'clf__min_samples_split': [2, 3, 4], 'clf__min_samples_leaf': [2, 3, 4], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4), (4, 5)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
+Best Params: {'clf__criterion': 'entropy', 'clf__max_depth': 18, 'clf__min_samples_leaf': 3, 'clf__min_samples_split': 2, 'count_vectorizer__max_features': 1750, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.992165707559714
+
+===== KNN Grid Search Results =====
+Grid: {'clf__n_neighbors': [2, 3, 4, 5], 'clf__weights': ['uniform', 'distance'], 'clf__metric': ['euclidean', 'manhattan'], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1250, 1500, 1750]}
+Best Params: {'clf__metric': 'euclidean', 'clf__n_neighbors': 4, 'clf__weights': 'distance', 'count_vectorizer__max_features': 1500, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.9896488875687519
+
+===== NB Grid Search Results =====
+Grid: {'clf__alpha': [0.2, 0.1, 0.09], 'clf__fit_prior': [True, False], 'clf__force_alpha': [True, False], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
+Best Params: {'clf__alpha': 0.1, 'clf__fit_prior': False, 'clf__force_alpha': True, 'count_vectorizer__max_features': 2250, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.989231471718445
+
+===== DT Grid Search Results =====
+Time: 2026-04-08 21:38:21.728699
+Grid: {'clf__criterion': ['gini', 'entropy', 'log_loss'], 'clf__max_depth': [17, 18, 19, 20], 'clf__min_samples_split': [2, 3, 4], 'clf__min_samples_leaf': [2, 3, 4], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4), (4, 5)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
+Best Params: {'clf__criterion': 'entropy', 'clf__max_depth': 18, 'clf__min_samples_leaf': 3, 'clf__min_samples_split': 2, 'count_vectorizer__max_features': 1750, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.992165707559714
+
+===== KNN Grid Search Results =====
+Grid: {'clf__n_neighbors': [2, 3, 4, 5], 'clf__weights': ['uniform', 'distance'], 'clf__metric': ['euclidean', 'manhattan'], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1250, 1500, 1750]}
+Best Params: {'clf__metric': 'euclidean', 'clf__n_neighbors': 4, 'clf__weights': 'distance', 'count_vectorizer__max_features': 1500, 'count_vectorizer__ngram_range': (1, 2)}
+Best Score: 0.9896488875687519
 
 ===== NB Grid Search Results =====
 Grid: {'clf__alpha': [0.2, 0.1, 0.09], 'clf__fit_prior': [True, False], 'clf__force_alpha': [True, False], 'count_vectorizer__ngram_range': [(1, 2), (2, 3), (3, 4)], 'count_vectorizer__max_features': [1750, 2000, 2250]}
